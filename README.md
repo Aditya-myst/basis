@@ -1,196 +1,247 @@
 # Basis
 
-> **Every claim needs a basis.**  
-> Evidence lint for AI-written text.
+### Check whether AI citations actually support their claims.
 
-Basis is a portable agent skill that checks factual writing against sources the agent actually read. It finds unsupported claims, broken claim-to-citation links, misleading quotations, numerical errors, stale evidence, and causal overreach. It can then repair the draft without filling gaps with new inventions.
+Basis is a free, open-source agent skill for auditing factual writing against sources the AI actually read. It finds unsupported claims, misleading quotations, citation mismatches, numerical errors, stale evidence, and causal overreach—then repairs only what the evidence allows.
 
-It works with agents that support Markdown skills, including Claude Code, Codex, Cursor, and other agents supported by the Skills CLI.
-
-**The difference is the evidence trail.** Basis does not stop at “this may be inaccurate.” It identifies the exact claim, assigns a precise status, quotes the relevant evidence, explains the problem, and limits the repair to what that evidence supports.
-
-## Before and after
-
-This example is fictional. The sources are supplied with the draft.
-
-**Draft**
-
-> In a 2024 lab test, the Aero One lasted 22 hours, so it delivers all-day battery life in every situation. A reviewer called it “the best battery we've tested.” Sales doubled after launch, proving the battery drove growth.
-
-**Checked evidence**
-
-- **S1, lab report:** A prototype played video for 22 hours at 150 nits in November 2024.
-- **S2, review:** The reviewer wrote “among the longest-lasting batteries we've tested this year.”
-- **S3, quarterly report:** Unit sales rose from 10,000 to 20,000 after launch; the same report records a concurrent marketing campaign.
-
-**Basis findings**
-
-| Claim | Status | Problem |
-| --- | --- | --- |
-| All-day battery life in every situation | `unsupported` | One video-playback test does not cover every use or condition. |
-| “The best battery we've tested” | `contradicted` | The checked quotation says “among the longest-lasting” and limits the comparison to that year. |
-| Sales doubled after launch | `supported` | The source reports 10,000 to 20,000 units in the relevant periods. |
-| The battery drove growth | `unsupported` | Timing alone does not establish causation; another campaign ran at the same time. |
-
-**Repaired text**
-
-> In a November 2024 lab test, an Aero One prototype played video for 22 hours at 150 nits. A reviewer placed it among the longest-lasting batteries they had tested that year. Unit sales rose from 10,000 to 20,000 after launch; the checked evidence does not establish what caused the increase.
-
-No made-up replacement fact. No fake confidence score. No claim that an inaccessible source was checked.
-
-## Why Basis?
-
-Generic fact-check prompts often fail in predictable ways:
-
-- They treat a real-looking citation as proof without reading it.
-- They call a claim false when they merely failed to find support.
-- They “fix” one hallucination by adding another.
-- They count repeated reporting as independent confirmation.
-- They return an accuracy percentage with no defensible method.
-- They hide research limits behind a clean rewrite.
-
-Basis makes those failures explicit. It separates **source access**, **evidence**, **verdict**, and **repair**, then audits the result a second time.
-
-## Installation
-
-Replace `Aditya-myst` with the GitHub account or organization that hosts your copy.
-
-### Claude Code
+**No invented sources. No unexplained truth score. No “false” verdict merely because evidence is missing.**
 
 ```text
-/plugin marketplace add Aditya-myst/basis
-/plugin install basis@basis
+A real-looking citation does not necessarily support the sentence beside it.
+Basis checks the claim, shows the evidence, and limits the repair.
 ```
 
-The plugin responds to `/basis:basis`. Use a current version of Claude Code. If plugin installation is unavailable, use the Skills CLI command below with `--agent claude-code`.
+## See what it does
+
+This fictional draft contains a subtle misquotation and an unsupported causal claim:
+
+> In a 2024 lab test, the Aero One lasted 22 hours, so it delivers all-day battery life in every situation. A reviewer called it “the best battery we've tested.” Unit sales rose from 10,000 to 20,000 after launch, proving the battery drove growth.
+
+Basis checks the draft against three supplied sources and returns:
+
+| Claim | Verdict | Why |
+| --- | --- | --- |
+| 22-hour battery test | `partially_supported` | The source specifies a prototype, video playback, and 150-nit brightness |
+| All-day battery in every situation | `unsupported` | One video test does not cover every workload |
+| “The best battery we've tested” | `contradicted` | The review says “among the longest-lasting” and limits the comparison to that year |
+| Unit sales rose from 10,000 to 20,000 | `supported` | The values and direction match the report |
+| The battery caused sales growth | `unsupported` | A concurrent marketing campaign was not controlled for |
+
+**Concise repair**
+
+> In a November 2024 lab test, an Aero One prototype played video for 22 hours at 150 nits. A reviewer placed it among the longest-lasting batteries tested that year. Unit sales doubled after launch, but the source does not isolate the battery's effect from a concurrent marketing campaign.
+
+The full example is in [`examples/`](examples/). Ask for a **full ledger** when you want every claim, exact evidence excerpt, check ID, and coverage limitation.
+
+## Install with npm / npx
+
+Node.js 22 or newer includes npm and `npx`. You do **not** need to run `npm install` in this repository.
+
+### Install for supported agents
+
+Replace `YOUR_USERNAME` with your GitHub username:
+
+```bash
+npx --yes skills@1.5.20 add YOUR_USERNAME/basis --global --agent '*'
+```
+
+On Windows PowerShell, use `npx.cmd`:
+
+```powershell
+npx.cmd --yes skills@1.5.20 add YOUR_USERNAME/basis --global --agent '*'
+```
+
+The Skills CLI installs Basis for supported agents. Leave off `--global` to install it only in the current project.
 
 ### Codex
 
 ```bash
-npx skills add Aditya-myst/basis --global --agent codex
+npx --yes skills@1.5.20 add YOUR_USERNAME/basis --global --agent codex
 ```
 
-### Claude.ai and Claude Desktop
-
-Download the repository as a ZIP and upload it as a skill in Settings. Keep `SKILL.md` at the ZIP root.
-
-### Other agents
+### Claude Code through the Skills CLI
 
 ```bash
-npx skills add Aditya-myst/basis --global --agent '*'
+npx --yes skills@1.5.20 add YOUR_USERNAME/basis --global --agent claude-code
 ```
 
-This installs Basis for agents supported by the Skills CLI. Leave off `--global` to install it only in the current project. For another agent, copy `SKILL.md` into its skill folder.
+### Claude Code plug-in
 
-### Try a local checkout
+Inside Claude Code:
+
+```text
+/plugin marketplace add YOUR_USERNAME/basis
+/plugin install basis@basis
+```
+
+The plug-in responds to `/basis:basis`.
+
+### Install from a local checkout
 
 ```bash
-git clone https://github.com/Aditya-myst/basis.git
+git clone https://github.com/YOUR_USERNAME/basis.git
 cd basis
-npx skills add . --global --agent '*'
+npx --yes skills@1.5.20 add . --global --agent '*'
 ```
 
-## Usage
+**Important:** npm installs the instructions; it does not provide an AI model. You need a compatible agent with model access, or you can use the free-chat method below.
 
-Call the skill directly or ask for it in plain language.
+## Use without an agent, subscription, or API key
 
-### Audit and repair with supplied sources
+You can use Basis in a free AI web chat that accepts long messages. npm is optional for this method.
+
+1. Open `SKILL.md` and copy its complete contents.
+2. Start a new AI chat.
+3. Paste the skill with this instruction:
 
 ```text
-/basis
+Use the following Markdown document as the operating instructions for this
+conversation. It defines a skill called Basis. Do not audit the instructions
+themselves. Wait for my draft and sources.
 
-Draft:
-[paste the text]
-
-Sources:
-[paste sources, file paths, or URLs]
+[PASTE SKILL.md HERE]
 ```
 
-The default response contains an audit, findings, revised text, checked sources, and coverage limits.
-
-### Audit without rewriting
+4. Send your draft and evidence:
 
 ```text
-Use basis to audit this draft. Do not rewrite it. Check every material claim
-against the two attached reports and return the full claim ledger.
+Use Basis in provided-sources mode.
 
-[paste draft]
+Give me a concise audit and repaired text. Use only the supplied evidence.
+Do not invent missing information or treat model memory as a checked source.
+
+DRAFT:
+[Paste your text]
+
+SOURCE S1:
+[Paste the first relevant source or excerpt]
+
+SOURCE S2:
+[Paste the second relevant source or excerpt]
 ```
 
-### Research and verify
+Providing source text is more reliable than providing only URLs when the chat cannot open links. Do not paste confidential material into a public or free chat service.
+
+## Use with an installed agent
+
+### Concise audit and repair
 
 ```text
-Use basis in open-research mode to check this article. Prefer primary sources.
-Treat anything you could not read as unverified. Today is the reference date
-for current claims.
+Use basis in provided-sources mode.
 
-[paste article]
+Give me a concise findings table and repaired text. Use only the supplied
+sources. Return high-severity findings first.
+
+DRAFT:
+[Paste your text]
+
+SOURCES:
+[Paste source text, paths, or URLs]
 ```
 
-Open research requires an agent with retrieval tools. Basis never claims to have browsed a source when no such tool was available.
-
-### Check a local document
+### Full claim ledger
 
 ```text
-Use basis to audit docs/launch.md against docs/evidence/. Do not edit the file.
-Return high-severity findings first.
+Use basis in provided-sources mode.
+Return the full claim ledger with exact evidence excerpts.
+Audit only; do not rewrite.
+
+DRAFT:
+[Paste your text]
+
+SOURCES:
+[Paste your evidence]
 ```
 
-To repair the file, explicitly say so:
+### Audit a local document
 
 ```text
-Use basis to repair docs/launch.md using docs/evidence/. Change factual prose
-only. Write the full audit to launch-audit.json using the Basis JSON schema.
+Use basis to audit docs/launch.md against docs/evidence/.
+Do not edit any files. Return a concise audit.
 ```
 
-### Machine-readable output
+To permit edits, explicitly ask:
 
 ```text
-Use basis in JSON mode. Audit only; do not repair the text.
-
-[paste draft and sources]
+Use basis to repair docs/launch.md using docs/evidence/.
+Change factual prose only. Write the full audit to launch-audit.json.
 ```
 
-The output follows [`schemas/report.schema.json`](schemas/report.schema.json) and can be checked locally:
+### Open research
+
+```text
+Use basis in open-research mode to verify this article.
+Prefer primary sources and record only sources you actually read.
+Treat inaccessible evidence as unverified.
+
+[Paste article]
+```
+
+Open research requires retrieval tools. Basis must not claim to have browsed a source when retrieval was unavailable.
+
+## Evidence modes and verdicts
+
+| Mode | Evidence used |
+| --- | --- |
+| `provided-sources` | Only sources the user supplied or identified |
+| `open-research` | Sources found and actually read with available tools |
+| `no-sources` | Internal consistency, calculations, local evidence, and explicit gaps |
+
+| Status | Meaning |
+| --- | --- |
+| `supported` | Checked evidence establishes every material part of the claim |
+| `partially_supported` | Evidence establishes only part of the claim or requires stronger limits |
+| `contradicted` | Checked evidence directly conflicts with the claim |
+| `unsupported` | Checked evidence does not establish the claim; this does not mean it is false |
+| `unverified` | Accessible evidence was insufficient to check the claim |
+| `disputed` | Credible checked sources materially conflict |
+
+Severity is reported separately as `high`, `medium`, `low`, or `none`.
+
+## Why Basis?
+
+Generic fact-check prompts often:
+
+- Treat a real-looking citation as proof without reading it
+- Confuse missing support with direct contradiction
+- Repair one invented fact by adding another
+- Count repeated reporting as independent confirmation
+- Return an accuracy percentage with no defensible method
+- Hide research limits behind polished copy
+
+Basis separates **claim extraction**, **source access**, **exact evidence**, **verdict**, and **repair**. Drafts and sources are treated as untrusted data, not instructions. Private material is not sent to external services without authorization.
+
+## Machine-readable audits
+
+Ask for JSON mode:
+
+```text
+Use basis in JSON mode.
+Audit only; do not repair the text.
+
+[Paste draft and sources]
+```
+
+Validate the resulting `report.json` locally:
 
 ```bash
 python3 scripts/validate-report.py report.json
 ```
 
-## Evidence modes
+PowerShell:
 
-| Mode | What Basis uses | What it must not imply |
-| --- | --- | --- |
-| **Provided sources** | Only material the user supplied or identified | That other research was performed |
-| **Open research** | Sources found and actually read with available tools | That the search was comprehensive |
-| **No sources** | Internal consistency, calculations, local files, and explicit gaps | That model memory is checked evidence |
+```powershell
+python scripts/validate-report.py report.json
+```
 
-## Claim statuses
+The validator rejects unknown source references, evidence from unaccessed sources, mismatched counts, unsupported schema fields, missing evidence for evidence-based verdicts, and disputed claims backed by fewer than two sources.
 
-| Status | Meaning |
-| --- | --- |
-| `supported` | Checked evidence establishes every material part, including scope and time frame. |
-| `partially_supported` | Evidence establishes part of the claim, but an important element or qualifier is too strong or missing. |
-| `contradicted` | Checked evidence directly conflicts with the claim. |
-| `unsupported` | The checked evidence does not establish the claim. This does **not** mean it is false. |
-| `unverified` | Accessible evidence was insufficient to check the claim. |
-| `disputed` | Credible checked sources materially conflict. |
-
-Severity is separate: `high`, `medium`, `low`, or `none`. A claim can be unsupported and low severity, or contradicted and high severity.
-
-## How it works
-
-1. **Extract claims.** Split compound statements while preserving qualifiers, dates, numbers, comparisons, and modality.
-2. **Build a source ledger.** Record real sources, access status, type, date, and precise locations.
-3. **Capture evidence.** Attach a verbatim quote, exact value, calculation, or executable result to each evidence-based verdict.
-4. **Assign statuses.** Distinguish missing support, direct conflict, inaccessible evidence, and genuine disagreement.
-5. **Run 24 checks.** Audit the claim itself, its citations, numbers, dates, reasoning, and consistency with the rest of the draft.
-6. **Repair conservatively.** Narrow, attribute, correct, remove, or ask. Never invent a missing detail.
-7. **Audit the audit.** Recheck quotations, calculations, entities, negations, repairs, and coverage limits.
-
-Source text is always treated as untrusted data, not instructions. Private drafts are not sent to external services without explicit authorization.
+Structural validation does not independently prove that an excerpt is authentic or a verdict is correct.
 
 ## The 24 checks
+
+<details>
+<summary><strong>Expand the complete evidence-check reference</strong></summary>
 
 ### A. Claim-evidence fit
 
@@ -200,7 +251,7 @@ Source text is always treated as untrusted data, not instructions. Private draft
 | 2 | **Partial support** | Evidence covers only part of a compound claim |
 | 3 | **Contradicted claim** | Evidence directly reverses a value, date, actor, direction, or event |
 | 4 | **Overgeneralized scope** | One sample, place, test, or period becomes a universal claim |
-| 5 | **Inflated certainty** | Suggestive or conditional evidence becomes “proof” or a guarantee |
+| 5 | **Inflated certainty** | Suggestive or conditional evidence becomes proof or a guarantee |
 | 6 | **Speculation presented as fact** | A motive, prediction, explanation, or missing detail is asserted without support |
 
 ### B. Citations and quotations
@@ -229,7 +280,7 @@ Source text is always treated as untrusted data, not instructions. Private draft
 | # | Check | What it catches |
 | --- | --- | --- |
 | 18 | **Time-frame drift** | Plans become outcomes, old results become current, or periods are merged |
-| 19 | **Stale evidence for a current claim** | Old evidence is used for “now,” “latest,” or “currently” |
+| 19 | **Stale evidence for a current claim** | Old evidence is used for now, latest, or currently |
 
 ### E. Reasoning and attribution
 
@@ -238,7 +289,7 @@ Source text is always treated as untrusted data, not instructions. Private draft
 | 20 | **Correlation presented as causation** | Timing or covariance becomes a cause without adequate evidence |
 | 21 | **Entity confusion** | Similar people, products, organizations, studies, or versions are mixed up |
 | 22 | **Opinion or consensus presented as settled fact** | Value judgments or selected voices become universal agreement |
-| 23 | **Absence of evidence presented as disproof** | A failed search or a source's silence becomes “never” or “disproven” |
+| 23 | **Absence of evidence presented as disproof** | A failed search or a source's silence becomes never or disproven |
 
 ### F. Draft consistency
 
@@ -246,38 +297,23 @@ Source text is always treated as untrusted data, not instructions. Private draft
 | --- | --- | --- |
 | 24 | **Internal contradiction** | Two passages, a summary and table, or a heading and section disagree |
 
-An inaccessible link is not automatically fabricated. A missing citation is not automatically false. A citation is not automatically support. These distinctions are central to Basis.
+</details>
 
 ## What Basis does not do
 
 - It does not guarantee truth or replace expert review.
-- It does not produce a numerical “truth score.”
+- It does not supply an AI model through npm.
 - It does not use model memory as a checked citation.
 - It does not call claims false merely because evidence was unavailable.
 - It does not bypass paywalls, authentication, or access restrictions.
-- It does not edit files unless asked.
-- It does not fact-check fiction as though invented events were real.
+- It does not edit files unless explicitly asked.
+- It does not produce a numerical truth score.
 
-For medical, legal, financial, safety, electoral, or reputational decisions, use qualified professional review in addition to an evidence audit.
-
-## Repository layout
-
-```text
-basis/
-├── SKILL.md                    # The portable agent instructions
-├── schemas/report.schema.json  # Machine-readable audit contract
-├── examples/                   # Fictional draft, sources, and valid report
-├── evals/                      # Small development set and evaluation method
-├── scripts/                    # Dependency-free package and report validators
-├── tests/                      # Standard-library unit tests
-├── agents/openai.yaml          # OpenAI-compatible agent metadata
-├── .claude-plugin/             # Claude plug-in and marketplace manifests
-└── .cursor-plugin/             # Cursor plug-in manifest
-```
+Medical, legal, financial, safety, electoral, and reputational decisions still require qualified professional review.
 
 ## Development
 
-Basis has no build step and no runtime package dependencies. Python 3.10+ is enough for the local validators and tests.
+Basis has no build step and no runtime package dependencies. Python 3.10+ runs the validators and tests:
 
 ```bash
 python3 scripts/validate-package.py
@@ -285,24 +321,22 @@ python3 scripts/validate-report.py examples/report.json
 python3 -m unittest discover -s tests -v
 ```
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md), [`evals/README.md`](evals/README.md), and [`AGENTS.md`](AGENTS.md) before changing the skill.
+On Windows, use `python` instead of `python3`.
 
-## Roadmap
+```text
+SKILL.md                    Portable agent instructions
+schemas/report.schema.json  JSON audit contract
+examples/                   Fictional worked example
+scripts/                    Package and report validators
+tests/                      Standard-library unit tests
+evals/                      Development cases and evaluation method
+docs/launch.md              Publishing and launch checklist
+```
 
-The initial release focuses on a careful, portable prompt and a strict report contract. Good next steps are:
+See [`CONTRIBUTING.md`](CONTRIBUTING.md), [`SECURITY.md`](SECURITY.md), and [`AGENTS.md`](AGENTS.md).
 
-- More adversarial evaluation cases, including prompt injection and conflicting sources.
-- Public, reproducible comparisons against a generic fact-check prompt.
-- Optional deterministic quotation matching for locally saved source text.
-- Editorial integrations that consume the JSON report.
-- Multilingual examples tested with native-speaking reviewers.
+## Inspiration and license
 
-Performance claims belong in the README only after reproducible evaluation supports them.
+Basis is an independent project inspired by the focused, portable packaging of [blader/humanizer](https://github.com/blader/humanizer). Humanizer edits AI writing patterns; Basis audits claim-to-evidence fit and citation integrity. No affiliation or performance claim is implied.
 
-## Inspiration
-
-Basis is an independent project inspired by the focused, portable packaging of [blader/humanizer](https://github.com/blader/humanizer). Humanizer edits AI writing patterns; Basis audits claim-to-evidence fit and citation integrity. No performance or affiliation claim is implied.
-
-## License
-
-MIT. See [`LICENSE`](LICENSE).
+MIT License. See [`LICENSE`](LICENSE).
