@@ -1,0 +1,4 @@
+interface:
+  display_name: "Basis"
+  short_description: "Check every claim against evidence actually read"
+  default_prompt: "Use $basis to audit this draft against the supplied sources, show exact evidence, and repair only what the evidence allows."

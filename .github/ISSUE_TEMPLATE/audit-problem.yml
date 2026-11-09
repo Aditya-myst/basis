@@ -1,0 +1,62 @@
+name: Bad audit or repair
+description: Report a wrong verdict, invented evidence item, unsafe repair, or missed check
+title: "[Audit]: "
+labels: ["bug", "audit-quality"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Remove private information and use the shortest example that reproduces the problem. Do not attach credentials or confidential documents.
+  - type: textarea
+    id: draft
+    attributes:
+      label: Draft or claim
+      description: Paste the exact text that was audited.
+      placeholder: "The study included 24 participants..."
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources and access
+      description: Include short relevant excerpts or public links and say what the agent could access.
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Evidence mode
+      options:
+        - provided-sources
+        - open-research
+        - no-sources
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include the verdict, evidence, repair, or behavior that was wrong.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: Explain the correct status or behavior and why the evidence requires it.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Basis version, agent, and model
+      placeholder: "Basis 0.1.0; agent and model used; retrieval tools available"
+    validations:
+      required: true
+  - type: checkboxes
+    id: sanitized
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed private data and can publish this example.
+          required: true

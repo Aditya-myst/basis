@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Basis evidence audit",
+  "description": "A claim-level audit with checked evidence and explicit coverage limits.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "mode",
+    "summary",
+    "claims",
+    "sources",
+    "limitations",
+    "revised_text"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "mode": {
+      "enum": ["provided-sources", "open-research", "no-sources"]
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["counts"],
+      "properties": {
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "supported",
+            "partially_supported",
+            "contradicted",
+            "unsupported",
+            "unverified",
+            "disputed"
+          ],
+          "properties": {
+            "supported": {"type": "integer", "minimum": 0},
+            "partially_supported": {"type": "integer", "minimum": 0},
+            "contradicted": {"type": "integer", "minimum": 0},
+            "unsupported": {"type": "integer", "minimum": 0},
+            "unverified": {"type": "integer", "minimum": 0},
+            "disputed": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "text",
+          "status",
+          "severity",
+          "check_ids",
+          "evidence",
+          "explanation",
+          "repair"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^C[1-9][0-9]*$"},
+          "text": {"type": "string", "minLength": 1},
+          "status": {
+            "enum": [
+              "supported",
+              "partially_supported",
+              "contradicted",
+              "unsupported",
+              "unverified",
+              "disputed"
+            ]
+          },
+          "severity": {"enum": ["none", "low", "medium", "high"]},
+          "check_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "integer", "minimum": 1, "maximum": 24}
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["source_id", "kind", "excerpt", "locator"],
+              "properties": {
+                "source_id": {"type": "string", "pattern": "^S[1-9][0-9]*$"},
+                "kind": {
+                  "enum": ["quotation", "data", "calculation", "output", "paraphrase"]
+                },
+                "excerpt": {"type": "string", "minLength": 1},
+                "locator": {"type": "string", "minLength": 1}
+              }
+            }
+          },
+          "explanation": {"type": "string", "minLength": 1},
+          "repair": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "locator", "accessed", "kind", "publication_date"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^S[1-9][0-9]*$"},
+          "title": {"type": "string", "minLength": 1},
+          "locator": {"type": "string", "minLength": 1},
+          "accessed": {"type": "boolean"},
+          "kind": {
+            "enum": ["primary", "secondary", "tertiary", "dataset", "code", "other", "unknown"]
+          },
+          "publication_date": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "revised_text": {"type": ["string", "null"]}
+  }
+}

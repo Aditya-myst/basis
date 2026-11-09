@@ -1,0 +1,38 @@
+name: Propose a check
+description: Suggest a distinct claim-to-evidence failure not covered by the current 24 checks
+title: "[Check]: "
+labels: ["enhancement", "evaluation"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Proposed name
+      description: Use a short, specific name rather than a broad category like “bad facts.”
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Minimal example
+      description: Include the claim and enough checked source text to demonstrate the failure.
+    validations:
+      required: true
+  - type: textarea
+    id: distinction
+    attributes:
+      label: Why existing checks do not cover it
+      description: Name the closest current check and explain the behavioral difference.
+    validations:
+      required: true
+  - type: textarea
+    id: verdict
+    attributes:
+      label: Expected status and repair
+      description: State whether the example is unsupported, contradicted, unverified, disputed, or partially supported.
+    validations:
+      required: true
+  - type: textarea
+    id: negatives
+    attributes:
+      label: Important negative examples
+      description: Describe similar-looking text that should not be flagged.

@@ -1,0 +1,36 @@
+name: Validate package
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate package consistency
+        run: python3 scripts/validate-package.py
+      - name: Validate example report
+        run: python3 scripts/validate-report.py examples/report.json
+      - name: Run unit tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Check Skills CLI discovery
+        run: npx --yes skills@1.5.20 add . --list
+      - name: Check Claude plugin manifest
+        run: |
+          npm install --global @anthropic-ai/claude-code@2.1.237
+          claude plugin validate .

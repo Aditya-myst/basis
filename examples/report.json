@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "mode": "provided-sources",
+  "summary": {
+    "counts": {
+      "supported": 2,
+      "partially_supported": 0,
+      "contradicted": 1,
+      "unsupported": 2,
+      "unverified": 0,
+      "disputed": 0
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "text": "In a 2024 lab test, the Aero One lasted 22 hours.",
+      "status": "supported",
+      "severity": "none",
+      "check_ids": [],
+      "evidence": [
+        {
+          "source_id": "S1",
+          "kind": "quotation",
+          "excerpt": "In a controlled test on 12 November 2024, an Aero One prototype played video continuously for 22 hours with display brightness set to 150 nits.",
+          "locator": "S1: Lab report, first sentence"
+        }
+      ],
+      "explanation": "The source establishes the product, year, test setting, and duration. The repair restores the prototype, workload, and brightness conditions.",
+      "repair": "In a November 2024 lab test, an Aero One prototype played video for 22 hours at 150 nits."
+    },
+    {
+      "id": "C2",
+      "text": "The Aero One delivers all-day battery life in every situation.",
+      "status": "unsupported",
+      "severity": "high",
+      "check_ids": [4, 5],
+      "evidence": [
+        {
+          "source_id": "S1",
+          "kind": "quotation",
+          "excerpt": "The test did not measure gaming, calls, camera use, or standby time.",
+          "locator": "S1: Lab report, second sentence"
+        }
+      ],
+      "explanation": "One controlled video-playback result does not establish battery life for every workload or condition.",
+      "repair": null
+    },
+    {
+      "id": "C3",
+      "text": "A reviewer called it ‘the best battery we've tested.’",
+      "status": "contradicted",
+      "severity": "medium",
+      "check_ids": [9, 17],
+      "evidence": [
+        {
+          "source_id": "S2",
+          "kind": "quotation",
+          "excerpt": "The Aero One has among the longest-lasting batteries we've tested this year.",
+          "locator": "S2: Review, first sentence"
+        }
+      ],
+      "explanation": "The checked quotation says ‘among the longest-lasting,’ not ‘the best,’ and limits the comparison to the current year.",
+      "repair": "A reviewer placed it among the longest-lasting batteries they had tested that year."
+    },
+    {
+      "id": "C4",
+      "text": "Unit sales rose from 10,000 to 20,000 units after launch.",
+      "status": "supported",
+      "severity": "none",
+      "check_ids": [],
+      "evidence": [
+        {
+          "source_id": "S3",
+          "kind": "data",
+          "excerpt": "Unit sales increased from 10,000 in the quarter before launch to 20,000 in the quarter after launch.",
+          "locator": "S3: Quarterly report, first sentence"
+        }
+      ],
+      "explanation": "The exact values and before/after direction match the supplied report.",
+      "repair": null
+    },
+    {
+      "id": "C5",
+      "text": "The battery drove the sales growth.",
+      "status": "unsupported",
+      "severity": "high",
+      "check_ids": [5, 20],
+      "evidence": [
+        {
+          "source_id": "S3",
+          "kind": "quotation",
+          "excerpt": "A regional marketing campaign ran during the post-launch quarter. We did not measure the separate effects of the campaign and product features.",
+          "locator": "S3: Quarterly report, second and third sentences"
+        }
+      ],
+      "explanation": "The source records timing and a concurrent campaign but no causal measurement. The battery's effect cannot be isolated from this evidence.",
+      "repair": "The checked evidence does not establish what caused the increase."
+    }
+  ],
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Fictional Aero One lab report",
+      "locator": "examples/sources.md#s1-lab-report",
+      "accessed": true,
+      "kind": "primary",
+      "publication_date": "2024-11-15"
+    },
+    {
+      "id": "S2",
+      "title": "Fictional Aero One review",
+      "locator": "examples/sources.md#s2-review",
+      "accessed": true,
+      "kind": "secondary",
+      "publication_date": "2024-11-20"
+    },
+    {
+      "id": "S3",
+      "title": "Fictional quarterly report",
+      "locator": "examples/sources.md#s3-quarterly-report",
+      "accessed": true,
+      "kind": "primary",
+      "publication_date": "2025-02-01"
+    }
+  ],
+  "limitations": [
+    "This is a fictional package example. Only the three supplied source passages were used; no external research was performed."
+  ],
+  "revised_text": "In a November 2024 lab test, an Aero One prototype played video for 22 hours at 150 nits. A reviewer placed it among the longest-lasting batteries they had tested that year. Unit sales rose from 10,000 to 20,000 after launch; the checked evidence does not establish what caused the increase."
+}

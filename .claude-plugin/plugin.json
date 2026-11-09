@@ -1,0 +1,21 @@
+{
+  "name": "basis",
+  "description": "Audit and repair factual writing against evidence the agent actually checked.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Aditya Kumar Jha"
+  },
+  "license": "MIT",
+  "keywords": [
+    "fact-checking",
+    "citations",
+    "evidence",
+    "hallucination",
+    "editing"
+  ],
+  "skills": [
+    "./"
+  ],
+  "homepage": "https://github.com/Aditya-myst/basis",
+  "repository": "https://github.com/Aditya-myst/basis"
+}

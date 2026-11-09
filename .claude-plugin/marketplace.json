@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "basis",
+  "owner": {
+    "name": "Aditya Kumar Jha",
+    "url": "https://github.com/Aditya-myst"
+  },
+  "description": "Install Basis as a Claude plugin.",
+  "plugins": [
+    {
+      "name": "basis",
+      "source": "./",
+      "description": "Audit and repair factual writing against evidence the agent actually checked.",
+      "license": "MIT",
+      "keywords": [
+        "fact-checking",
+        "citations",
+        "evidence",
+        "hallucination",
+        "editing"
+      ]
+    }
+  ]
+}
