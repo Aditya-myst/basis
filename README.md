@@ -2,7 +2,7 @@
 
 ### Check whether AI citations actually support their claims.
 
-Basis is a free, open-source agent skill for auditing factual writing against sources the AI actually read. It finds unsupported claims, misleading quotations, citation mismatches, numerical errors, stale evidence, and causal overreach—then repairs only what the evidence allows.
+Basis is a free, open-source agent skill for auditing factual writing against sources the AI actually read. It finds unsupported claims, misleading quotations, citation mismatches, numerical errors, stale evidence, and causal overreach then repairs only what the evidence allows.
 
 **No invented sources. No unexplained truth score. No “false” verdict merely because evidence is missing.**
 
