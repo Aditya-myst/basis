@@ -8,7 +8,7 @@ Basis is ready as a local project. Publishing and adoption still require a real 
 2. Replace `YOUR_USERNAME` in `README.md`.
 3. Add your real author name, repository URL, and homepage to the plug-in manifests.
 4. Review `LICENSE` and `SECURITY.md` contact details.
-5. Add `assets/basis.svg` as the repository social preview if desired.
+5. Upload `assets/basis-social.png` as the repository social preview if desired. GitHub accepts PNG images and the file is already sized at 1280 × 640.
 
 Suggested GitHub description:
 
@@ -24,9 +24,7 @@ claude-code, codex, cursor, llm, writing
 ## 2. Verify before publishing
 
 ```bash
-python3 scripts/validate-package.py
-python3 scripts/validate-report.py examples/report.json
-python3 -m unittest discover -s tests -v
+npm test
 npx --yes skills@1.5.20 add . --list
 claude plugin validate .
 ```

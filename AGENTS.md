@@ -18,6 +18,7 @@ Basis is a portable agent skill written in Markdown. `SKILL.md` is the product. 
 - `schemas/report.schema.json`: JSON report contract. Report schema version changes require a migration note.
 - `scripts/validate-report.py`: Standard-library structural and cross-reference validation.
 - `scripts/validate-package.py`: Package consistency checks.
+- `package.json`: Private, dependency-free npm commands for validation and installation. It is not a published AI service.
 - `examples/`: Fictional worked example. Do not present it as real research.
 - `evals/`: Development cases, not a held-out benchmark.
 - `.claude-plugin/`: Claude plug-in and marketplace manifests.
@@ -43,7 +44,8 @@ Keep one package version in:
 - `SKILL.md` under `metadata.version`;
 - the first version heading in `CHANGELOG.md`;
 - `.claude-plugin/plugin.json`;
-- `.cursor-plugin/plugin.json`.
+- `.cursor-plugin/plugin.json`;
+- `package.json` under `version`.
 
 The report's `schema_version` is independent of the package version. Change it only for a breaking report-contract change.
 
@@ -58,11 +60,11 @@ Use plain, direct language. Keep examples fictional unless their real sources ar
 ## Required checks
 
 ```bash
-python3 scripts/validate-package.py
-python3 scripts/validate-report.py examples/report.json
-python3 -m unittest discover -s tests -v
+npm test
 npx --yes skills@1.5.20 add . --list
 ```
+
+The individual Python commands in `README.md` remain available when npm is unavailable.
 
 Before a plug-in release, also run `claude plugin validate .` with a current Claude Code installation.
 

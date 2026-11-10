@@ -2,6 +2,19 @@
 
 All notable changes to Basis are recorded here. The project uses semantic versioning.
 
+## 0.2.0 — 2026-11-09
+
+### Changed
+
+- Concise findings and a readable repair are now the default for pasted text.
+- Exact excerpts and supported claims remain available through full-ledger mode.
+- Audit-only responses use concise findings unless a full ledger is necessary or requested.
+
+### Added
+
+- Dependency-free npm commands for validation, unit tests, skill discovery, and agent-specific installation.
+- `npm test` coverage in continuous integration.
+
 ## 0.1.0 — 2026-11-09
 
 ### Added

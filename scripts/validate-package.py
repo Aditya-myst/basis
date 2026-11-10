@@ -50,6 +50,7 @@ REQUIRED_FILES = [
     ".claude-plugin/marketplace.json",
     ".cursor-plugin/plugin.json",
     "agents/openai.yaml",
+    "package.json",
     "schemas/report.schema.json",
     "examples/draft.md",
     "examples/sources.md",
@@ -67,6 +68,7 @@ changelog = text("CHANGELOG.md")
 plugin = json_file(".claude-plugin/plugin.json") or {}
 marketplace = json_file(".claude-plugin/marketplace.json") or {}
 cursor = json_file(".cursor-plugin/plugin.json") or {}
+npm_package = json_file("package.json") or {}
 schema = json_file("schemas/report.schema.json") or {}
 report = json_file("examples/report.json") or {}
 evals = json_file("evals/cases.json") or {}
@@ -96,6 +98,7 @@ versions = {
     changelog_match.group(1) if changelog_match else None,
     plugin.get("version"),
     cursor.get("version"),
+    npm_package.get("version"),
 }
 if len(versions) != 1 or None in versions:
     fail(f"Versions must agree across skill, changelog, and manifests: {sorted(versions, key=str)}")
@@ -109,6 +112,14 @@ if plugin.get("skills") != ["./"]:
     fail("Claude plugin must load skills from ['./']")
 if "skills" in cursor:
     fail("Cursor plugin must omit 'skills' so it discovers the root SKILL.md")
+if npm_package.get("private") is not True:
+    fail("package.json must stay private; the Skills CLI is the public installer")
+if npm_package.get("dependencies") or npm_package.get("devDependencies"):
+    fail("Keep the npm command wrapper free of package dependencies")
+npm_scripts = npm_package.get("scripts", {})
+for script_name in ("validate", "test", "skills:list", "install:codex", "install:claude"):
+    if script_name not in npm_scripts:
+        fail(f"package.json is missing the {script_name} script")
 
 marketplace_plugins = marketplace.get("plugins", [])
 if len(marketplace_plugins) != 1:

@@ -16,6 +16,12 @@ Do not submit private documents, confidential citations, personal data, or copyr
 Basis needs Python 3.10 or newer for development. There are no Python package dependencies.
 
 ```bash
+npm test
+```
+
+Or run the individual Python checks:
+
+```bash
 python3 scripts/validate-package.py
 python3 scripts/validate-report.py examples/report.json
 python3 -m unittest discover -s tests -v

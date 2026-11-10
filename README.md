@@ -31,7 +31,7 @@ Basis checks the draft against three supplied sources and returns:
 
 > In a November 2024 lab test, an Aero One prototype played video for 22 hours at 150 nits. A reviewer placed it among the longest-lasting batteries tested that year. Unit sales doubled after launch, but the source does not isolate the battery's effect from a concurrent marketing campaign.
 
-The full example is in [`examples/`](examples/). Ask for a **full ledger** when you want every claim, exact evidence excerpt, check ID, and coverage limitation.
+Concise findings and a readable repair are the default for pasted text. The full example is in [`examples/`](examples/). Ask for a **full ledger** when you want every claim, exact evidence excerpt, check ID, and coverage limitation.
 
 ## Install with npm / npx
 
@@ -39,16 +39,16 @@ Node.js 22 or newer includes npm and `npx`. You do **not** need to run `npm inst
 
 ### Install for supported agents
 
-Replace `YOUR_USERNAME` with your GitHub username:
+Replace `Aditya-myst` with your GitHub username:
 
 ```bash
-npx --yes skills@1.5.20 add YOUR_USERNAME/basis --global --agent '*'
+npx --yes skills@1.5.20 add Aditya-myst/basis --global --agent '*'
 ```
 
 On Windows PowerShell, use `npx.cmd`:
 
 ```powershell
-npx.cmd --yes skills@1.5.20 add YOUR_USERNAME/basis --global --agent '*'
+npx.cmd --yes skills@1.5.20 add Aditya-myst/basis --global --agent '*'
 ```
 
 The Skills CLI installs Basis for supported agents. Leave off `--global` to install it only in the current project.
@@ -56,13 +56,13 @@ The Skills CLI installs Basis for supported agents. Leave off `--global` to inst
 ### Codex
 
 ```bash
-npx --yes skills@1.5.20 add YOUR_USERNAME/basis --global --agent codex
+npx --yes skills@1.5.20 add Aditya-myst/basis --global --agent codex
 ```
 
 ### Claude Code through the Skills CLI
 
 ```bash
-npx --yes skills@1.5.20 add YOUR_USERNAME/basis --global --agent claude-code
+npx --yes skills@1.5.20 add Aditya-myst/basis --global --agent claude-code
 ```
 
 ### Claude Code plug-in
@@ -70,7 +70,7 @@ npx --yes skills@1.5.20 add YOUR_USERNAME/basis --global --agent claude-code
 Inside Claude Code:
 
 ```text
-/plugin marketplace add YOUR_USERNAME/basis
+/plugin marketplace add Aditya-myst/basis
 /plugin install basis@basis
 ```
 
@@ -79,10 +79,21 @@ The plug-in responds to `/basis:basis`.
 ### Install from a local checkout
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/basis.git
+git clone https://github.com/Aditya-myst/basis.git
 cd basis
 npx --yes skills@1.5.20 add . --global --agent '*'
 ```
+
+Or use the included npm scripts from a local checkout:
+
+```bash
+npm run skills:list       # Confirm that the skill is discoverable
+npm run install:codex     # Install only for Codex
+npm run install:claude    # Install only for Claude Code
+npm run install:all       # Optional: install for every supported agent
+```
+
+Agent-specific installation is recommended. The `all` command can report harmless errors for agents that do not support global skills, including Eve and PromptScript.
 
 **Important:** npm installs the instructions; it does not provide an AI model. You need a compatible agent with model access, or you can use the free-chat method below.
 
@@ -313,7 +324,13 @@ Medical, legal, financial, safety, electoral, and reputational decisions still r
 
 ## Development
 
-Basis has no build step and no runtime package dependencies. Python 3.10+ runs the validators and tests:
+Basis has no build step and no runtime package dependencies. With Node.js 22+ and Python 3.10+, run everything through npm:
+
+```bash
+npm test
+```
+
+Or run the individual Python checks:
 
 ```bash
 python3 scripts/validate-package.py
@@ -321,10 +338,11 @@ python3 scripts/validate-report.py examples/report.json
 python3 -m unittest discover -s tests -v
 ```
 
-On Windows, use `python` instead of `python3`.
+On Windows, use `python` instead of `python3`. No `npm install` is needed because `package.json` has no dependencies.
 
 ```text
 SKILL.md                    Portable agent instructions
+package.json                Dependency-free npm development commands
 schemas/report.schema.json  JSON audit contract
 examples/                   Fictional worked example
 scripts/                    Package and report validators

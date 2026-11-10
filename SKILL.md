@@ -6,7 +6,7 @@ description: |
   review a draft for hallucinations, or produce an evidence ledger and corrected copy.
 license: MIT
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Basis: evidence lint for factual writing
@@ -303,25 +303,24 @@ No issues found means no issues found **within the stated scope**, not that the 
 
 ## What to return
 
-### Pasted text, default
+### Quick mode, pasted text default
 
-Return these sections in order:
+Keep the complete evidence ledger in your work, but show only what the reader needs. Return these sections in order:
 
-1. **Audit:** Evidence mode, claims checked, sources read, and status counts. Include one sentence on coverage limits.
-2. **Findings:** Only claims needing attention, ordered by severity and then draft order. For each, give claim ID, status, severity, check IDs, exact evidence, and a concise reason. Supported claims do not need individual rows unless the user requests a full ledger.
-3. **Revised text:** A clean repair using only checked support. If a repair would remove most of the draft, ask whether the user prefers an annotated draft instead.
-4. **Sources checked:** Real source IDs and links or paths. Keep unaccessed references out of this section.
-5. **Changes and limits:** List central claims removed, narrowed, or left unresolved. Do not repeat the whole ledger.
+1. **Audit:** One line with evidence mode, claims checked, sources read, and status counts.
+2. **Findings:** A compact table of claims needing attention, ordered by severity and then draft order. Use columns for claim, status, and the evidence-backed reason. Include check IDs and short source references without repeating long excerpts. Never omit an unresolved high-severity finding.
+3. **Revised text:** A readable repair using only checked support. Keep necessary conditions, but do not add publication dates, source descriptions, or caveats unless they change the meaning or protect the reader from a material misunderstanding. If a repair would remove most of the draft, ask whether the user prefers an annotated draft instead.
+4. **Limits:** One short sentence covering evidence mode, inaccessible material, and any central claim left unresolved. Give real source links or paths when available.
 
-For a short draft, combine sections where that improves clarity. Never hide an unresolved high-severity claim behind a polished rewrite.
+Do not repeat the same evidence in findings, changes, sources, and limitations. Do not add a separate process narrative or a long list of supported claims. For a short draft, the response should normally fit on one screen; let completeness, not a fixed word limit, decide the exact length. End with `Ask for “full ledger” for exact excerpts and every claim.` when that option is useful.
 
 ### Audit only
 
-When the user says “audit,” “check,” or “do not rewrite,” omit revised text and return the ledger and limits.
+When the user says “audit,” “check,” or “do not rewrite,” omit revised text. Use the concise findings format by default, with evidence mode and limits. Return the full ledger only when asked or when exact excerpts are necessary to explain a high-severity verdict.
 
 ### Full ledger
 
-When asked for every claim, include supported claims as well as findings. Use the same IDs in text, tables, and JSON.
+When asked for every claim or exact excerpts, include supported claims as well as findings. For each claim, give its ID, exact text, status, severity, check IDs, exact evidence, locator, explanation, and repair. Use the same IDs in text, tables, and JSON. Do not shorten quotations or omit coverage limits in this mode.
 
 ### JSON mode
 
