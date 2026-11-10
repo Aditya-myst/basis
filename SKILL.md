@@ -6,7 +6,7 @@ description: |
   review a draft for hallucinations, or produce an evidence ledger and corrected copy.
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.2.1"
 ---
 
 # Basis: evidence lint for factual writing
@@ -82,7 +82,7 @@ Use the narrowest accurate status:
 
 - **supported:** Checked evidence establishes every material part of the claim, including scope and time frame.
 - **partially_supported:** Evidence establishes part of the claim, but an important element, qualifier, or scope is missing or too strong.
-- **contradicted:** Checked evidence directly conflicts with the claim. Quote the conflict.
+- **contradicted:** Checked evidence directly conflicts with the claim, including a quotation whose words differ from the source. Quote the conflict.
 - **unsupported:** The checked evidence does not establish the claim. This is not a declaration that the claim is false.
 - **unverified:** No accessible checked evidence can settle the claim. Explain what was missing or inaccessible.
 - **disputed:** Credible, relevant checked sources materially conflict. Show both positions and avoid choosing one without a stated basis.
@@ -192,7 +192,7 @@ No issues found means no issues found **within the stated scope**, not that the 
 ### 9. Misquotation
 
 **Watch for:** Changed words, omitted negation, altered numbers, merged statements, punctuation that changes meaning, or a paraphrase inside quotation marks.
-**Rule:** Compare character by character, allowing only extraction whitespace. Quote the checked version and explain material differences.
+**Rule:** Compare character by character, allowing only extraction whitespace. Quote the checked version and explain material differences. A quotation that changes the source's words — dropping a qualifier, inflating a superlative, removing a limit — is `contradicted`, not `partially_supported`: the source says something different from what the quotation marks assert. Reserve `partially_supported` for claims whose substance is partly backed outside the quotation.
 **Before:** Source: “among the best results we recorded.” Draft: “the best result we recorded.”
 **After:** Restore “among the best results we recorded,” or paraphrase without quotation marks.
 

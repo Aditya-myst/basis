@@ -37,6 +37,28 @@ Concise findings and a readable repair are the default for pasted text. The full
 
 Node.js 22 or newer includes npm and `npx`. You do **not** need to run `npm install` in this repository.
 
+### Try it with no installation
+
+No agent, account, API key, or subscription is required. Copy
+[`SKILL.md`](SKILL.md) into any AI chat, then paste the fictional
+[`examples/draft.md`](examples/draft.md) and
+[`examples/sources.md`](examples/sources.md) after it and ask for a
+provided-sources audit in quick mode. Everything in those files is fictional,
+so it is safe to share anywhere. Once you have seen it work, repeat the same
+three pastes with your own draft and the sources you actually relied on.
+
+### One-line install
+
+The shortest form, exactly as listed on the
+[skills directory](https://skills.sh/Aditya-myst/basis):
+
+```bash
+npx --yes skills add Aditya-myst/basis
+```
+
+Add `--global --agent codex`, `--agent claude-code`, or `--agent '*'` to target
+specific agents. The pinned commands below are equivalent and reproducible.
+
 ### Install for supported agents
 
 Replace `Aditya-myst` with your GitHub username:

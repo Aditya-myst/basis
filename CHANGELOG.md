@@ -2,6 +2,21 @@
 
 All notable changes to Basis are recorded here. The project uses semantic versioning.
 
+## 0.2.1 — 2026-11-10
+
+### Fixed
+
+- A quotation that changes the source's words — dropped qualifier, inflated
+  superlative, removed limit — is now explicitly `contradicted`, matching the
+  `superlative-misquote` evaluation case. Two live audits of the bundled
+  example disagreed on this verdict; the softer `partially_supported` reading
+  is now ruled out by the instruction text.
+
+### Added
+
+- A no-install quick start in the README using the fictional bundled example.
+- The shortest install command and a link to the skills.sh directory listing.
+
 ## 0.2.0 — 2026-11-09
 
 ### Changed
